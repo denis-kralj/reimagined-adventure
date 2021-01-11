@@ -397,13 +397,3 @@ dist
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
-
-### Custom ###
-# Adding wwwroot here until setting up a process that doesn't create
-# "production" code that changes on every transpile (have to see what
-# should actually be part of the repo.
-wwwroot/
-
-# Adding output of running dotnet build until we stop the dotnet build
-# process from generating this file, it isn't needed, issue #4
-src/index.js

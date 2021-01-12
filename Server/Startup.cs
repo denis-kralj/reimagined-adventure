@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
 using ReimaginedAdventure.Server.Hubs;
+using ReimaginedAdventure.Shared;
 
 namespace ReimaginedAdventure.Server
 {
@@ -28,6 +29,8 @@ namespace ReimaginedAdventure.Server
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
                     new[] { "application/octet-stream" });
             });
+
+            services.AddSingleton<IChatStore, MemoryChatStore>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

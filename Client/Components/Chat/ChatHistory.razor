@@ -1,0 +1,35 @@
+﻿@using Microsoft.AspNetCore.SignalR.Client
+@using ReimaginedAdventure.Shared
+@inject NavigationManager NavigationManager
+@implements IAsyncDisposable
+
+<ul id="messagesList">
+    @foreach (ChatMessage message in chatMessages)
+    {
+        <li><span>@message.User.Handle</span>:<span>@message.Message</span></li>
+    }
+</ul>
+
+@code {
+    private HubConnection hubConnection;
+    private IList<ChatMessage> chatMessages = new List<ChatMessage>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("/chathub"))
+            .Build();
+
+        hubConnection.On<IList<ChatMessage>>("MessagesUpdated", (messages) => { 
+            chatMessages = messages;
+            StateHasChanged();
+            });
+
+        await hubConnection.StartAsync();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await hubConnection.DisposeAsync();
+    }
+}

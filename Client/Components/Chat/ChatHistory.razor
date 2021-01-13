@@ -3,13 +3,14 @@
 @inject NavigationManager NavigationManager
 @implements IAsyncDisposable
 
+<div class="message-list">
 <ul id="messagesList">
     @foreach (ChatMessage message in chatMessages)
     {
-        <li><span>@message.User.Handle</span>:<span>@message.Message</span></li>
+        <li><strong>@message.User.Handle</strong>:<span>@message.Message</span></li>
     }
 </ul>
-
+</div>
 @code {
     private HubConnection hubConnection;
     private IList<ChatMessage> chatMessages = new List<ChatMessage>();

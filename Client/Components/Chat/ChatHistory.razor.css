@@ -1,0 +1,12 @@
+.message-list {
+    height: 90vh;
+    position: relative;
+}
+
+.message-list>ul {
+    overflow-y: auto;
+    bottom: 0px;
+    position: absolute;
+    max-height: 90vh;
+    width: 100%;
+}

@@ -1,0 +1,11 @@
+.chat-component-block {
+    height: 100vh;
+}
+
+.input {
+    height: 10vh;
+}
+
+.history {
+    height: 90vh;
+}

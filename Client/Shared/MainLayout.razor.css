@@ -1,3 +1,6 @@
+.main {
+    height: 100vh;
+}
 .page {
     position: relative;
     display: flex;
@@ -61,10 +64,5 @@
         position: sticky;
         top: 0;
         z-index: 1;
-    }
-
-    .main > div {
-        padding-left: 2rem !important;
-        padding-right: 1.5rem !important;
     }
 }

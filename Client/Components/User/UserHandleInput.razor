@@ -1,0 +1,43 @@
+@using ReimaginedAdventure.Shared
+
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject NavigationManager NavigationManager
+
+<div class="form-group">
+    <div class="error" @bind="errorMessage"></div>
+    <label>
+        You Handle:
+        <input @bind="handleInput" @onfocus="ClearError" size="50" />
+    </label>
+    
+</div>
+
+<button @onclick="Submit" >Let's Chat!</button>
+
+@code {
+    private string handleInput;
+    private string errorMessage;
+
+    public void ClearError()
+    {
+        errorMessage = string.Empty;
+    }
+
+    public async Task Submit() {
+
+        if(string.IsNullOrWhiteSpace(handleInput))
+        {
+            errorMessage = "You need to enter something...";
+            StateHasChanged();
+            return;
+        }
+
+        var userData = new User();
+
+        userData.Handle = handleInput;
+
+        await localStorage.SetItemAsync<User>(LocalStorageKeys.UserData, userData);
+
+        NavigationManager.NavigateTo("/");
+    }
+}

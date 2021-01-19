@@ -1,5 +1,9 @@
 ﻿@using Microsoft.AspNetCore.SignalR.Client
+@using ReimaginedAdventure.Shared
+
 @inject NavigationManager NavigationManager
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
 @implements IAsyncDisposable
 
 <div class="form-group">
@@ -22,6 +26,13 @@
             .Build();
 
         await hubConnection.StartAsync();
+
+        if(await localStorage.ContainKeyAsync(LocalStorageKeys.UserData))
+        {
+            var userData = await localStorage.GetItemAsync<User>(LocalStorageKeys.UserData);
+
+            userName = userData.Handle;
+        }
     }
 
     Task Send() =>

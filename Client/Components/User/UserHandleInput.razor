@@ -18,6 +18,16 @@
     private string handleInput;
     private string errorMessage;
 
+    protected override async Task OnInitializedAsync()
+    {
+        if(await localStorage.ContainKeyAsync(LocalStorageKeys.UserData))
+        {
+            var userData = await localStorage.GetItemAsync<User>(LocalStorageKeys.UserData);
+
+            handleInput = userData.Handle;
+        }
+    }
+
     public void ClearError()
     {
         errorMessage = string.Empty;

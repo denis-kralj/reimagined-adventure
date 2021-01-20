@@ -12,7 +12,7 @@
         <input @bind="messageInput" size="50" />
     </label>
 </div>
-<button @onclick="Send" disabled="@(!IsConnected)">Send</button>
+<p><button @onclick="Send" disabled="@(!IsConnected)">Send</button> as @userName (<a @onclick="EditUserHandle">Adjust</a>)</p>
 
 @code {
     private HubConnection hubConnection;
@@ -35,6 +35,7 @@
         }
     }
 
+    void EditUserHandle() => NavigationManager.NavigateTo("/EditUserHandle");
     Task Send() =>
         hubConnection.SendAsync("SendMessage", userName, messageInput);
 

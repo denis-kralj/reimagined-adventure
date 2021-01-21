@@ -1,4 +1,21 @@
 ﻿@page "/"
+
 @using ReimaginedAdventure.Client.Components.Chat
+@using ReimaginedAdventure.Shared
+
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject NavigationManager NavigationManager
 
 <ChatComponent></ChatComponent>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        var userDataExists = await localStorage.ContainKeyAsync(LocalStorageKeys.UserData);
+
+        if(!userDataExists)
+        {
+            NavigationManager.NavigateTo("/EditUserHandle");
+        }
+    }
+}

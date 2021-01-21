@@ -1,5 +1,9 @@
 ﻿@using Microsoft.AspNetCore.SignalR.Client
+@using ReimaginedAdventure.Shared
+
 @inject NavigationManager NavigationManager
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
 @implements IAsyncDisposable
 
 <div class="form-group">
@@ -8,7 +12,7 @@
         <input @bind="messageInput" size="50" />
     </label>
 </div>
-<button @onclick="Send" disabled="@(!IsConnected)">Send</button>
+<p><button @onclick="Send" disabled="@(!IsConnected)">Send</button> as @userName (<a @onclick="EditUserHandle">Adjust</a>)</p>
 
 @code {
     private HubConnection hubConnection;
@@ -22,8 +26,16 @@
             .Build();
 
         await hubConnection.StartAsync();
+
+        if(await localStorage.ContainKeyAsync(LocalStorageKeys.UserData))
+        {
+            var userData = await localStorage.GetItemAsync<User>(LocalStorageKeys.UserData);
+
+            userName = userData.Handle;
+        }
     }
 
+    void EditUserHandle() => NavigationManager.NavigateTo("/EditUserHandle");
     Task Send() =>
         hubConnection.SendAsync("SendMessage", userName, messageInput);
 

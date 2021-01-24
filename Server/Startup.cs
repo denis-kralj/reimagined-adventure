@@ -22,7 +22,7 @@ namespace ReimaginedAdventure.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSignalR();
-            services.AddControllersWithViews();
+            services.AddControllers();
             services.AddRazorPages();
             services.AddResponseCompression(opts =>
             {

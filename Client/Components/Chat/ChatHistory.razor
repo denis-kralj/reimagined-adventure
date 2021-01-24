@@ -1,4 +1,5 @@
 ﻿@inject NavigationManager NavigationManager
+@inject HttpClient httpClient
 @implements IAsyncDisposable
 
 <div class="message-list">
@@ -14,6 +15,18 @@
     private IList<ChatMessage> chatMessages = new List<ChatMessage>();
 
     protected override async Task OnInitializedAsync()
+    {
+        await InitializeSignalRHub();
+        await PopulateExistingMessages();
+    }
+
+    private async Task PopulateExistingMessages()
+    {
+        var allMessages = await httpClient.GetFromJsonAsync<ChatMessage[]>("Message");
+        chatMessages = allMessages.ToList();
+    }
+
+    private async Task InitializeSignalRHub()
     {
         hubConnection = new HubConnectionBuilder()
             .WithUrl(NavigationManager.ToAbsoluteUri("/chathub"))

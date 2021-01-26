@@ -32,8 +32,8 @@
             .WithUrl(NavigationManager.ToAbsoluteUri("/chathub"))
             .Build();
 
-        hubConnection.On<IList<ChatMessage>>("MessagesUpdated", (messages) => { 
-            chatMessages = messages;
+        hubConnection.On<ChatMessage>("MessagesUpdated", (message) => { 
+            chatMessages.Add(message);
             StateHasChanged();
             });
 

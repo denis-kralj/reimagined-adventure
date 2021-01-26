@@ -23,7 +23,7 @@ namespace ReimaginedAdventure.Server.Hubs
             };
 
             _chatStore.PostMessage(newMessage);
-            await Clients.All.SendAsync("MessagesUpdated", _chatStore.GetAllMessages());
+            await Clients.All.SendAsync("MessagesUpdated", newMessage);
         }
     }
 }

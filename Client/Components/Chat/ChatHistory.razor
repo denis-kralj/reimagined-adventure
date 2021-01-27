@@ -29,7 +29,7 @@
     private async Task InitializeSignalRHub()
     {
         hubConnection = new HubConnectionBuilder()
-            .WithUrl(NavigationManager.ToAbsoluteUri("/chathub"))
+            .WithUrl(NavigationManager.ToAbsoluteUri(UriSegments.ChatHub))
             .Build();
 
         hubConnection.On<ChatMessage>("MessagesUpdated", (message) => { 

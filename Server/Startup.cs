@@ -58,7 +58,7 @@ namespace ReimaginedAdventure.Server
             {
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
-                endpoints.MapHub<ChatHub>("/chathub");
+                endpoints.MapHub<ChatHub>(UriSegments.ChatHub);
                 endpoints.MapFallbackToFile("index.html");
             });
         }

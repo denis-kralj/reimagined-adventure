@@ -10,7 +10,7 @@
     </label>
 </div>
 <p><button @onclick="Send" disabled="@(!CanSend)">Send</button> as @userName (<a
-        @onclick="EditUserHandle">Adjust</a>)</p>
+        @onclick="EditUserHandle" class="pointer-link">Adjust</a>)</p>
 
 @code {
     private HubConnection hubConnection;

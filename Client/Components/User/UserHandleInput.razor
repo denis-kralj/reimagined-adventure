@@ -1,20 +1,18 @@
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject NavigationManager NavigationManager
 
-<div class="form-group">
-    <div class="error" @bind="errorMessage"></div>
-    <label>
-        You Handle:
-        <input @bind="handleInput" @onfocus="ClearError" size="50" />
-    </label>
-    
-</div>
+<EditForm Model="@User" OnValidSubmit="@Submit">
+<FluentValidationValidator />
+<p>
+    You Handle: <InputText @bind-Value="@User.Handle"/>
+</p>
+<button type="submit">Let's Chat!</button>
+<ValidationSummary />
+</EditForm>
 
-<button @onclick="Submit" >Let's Chat!</button>
 
 @code {
-    private string handleInput;
-    private string errorMessage;
+    User User { get; set; } = new User();
 
     protected override async Task OnInitializedAsync()
     {
@@ -22,29 +20,13 @@
         {
             var userData = await localStorage.GetItemAsync<User>(LocalStorageKeys.UserData);
 
-            handleInput = userData.Handle;
+            User.Handle = userData.Handle;
         }
     }
 
-    public void ClearError()
+    public async Task Submit()
     {
-        errorMessage = string.Empty;
-    }
-
-    public async Task Submit() {
-
-        if(string.IsNullOrWhiteSpace(handleInput))
-        {
-            errorMessage = "You need to enter something...";
-            StateHasChanged();
-            return;
-        }
-
-        var userData = new User();
-
-        userData.Handle = handleInput;
-
-        await localStorage.SetItemAsync<User>(LocalStorageKeys.UserData, userData);
+        await localStorage.SetItemAsync<User>(LocalStorageKeys.UserData, User);
 
         NavigationManager.NavigateTo("/");
     }

@@ -9,12 +9,12 @@
         <input @bind="messageInput" @onkeyup="MessageInputHandler" size="50" />
     </label>
 </div>
-<p><button @onclick="Send" disabled="@(!CanSend)">Send</button> as @userName (<a
+<p><button @onclick="Send" disabled="@(!CanSend)">Send</button> as @User.Handle (<a
         href="@(PageLinks.EditUserData)">Adjust</a>)</p>
 
 @code {
     private HubConnection hubConnection;
-    private string userName = string.Empty;
+    private User User = new User();
     private string messageInput;
 
     protected override async Task OnInitializedAsync()
@@ -25,17 +25,13 @@
 
         await hubConnection.StartAsync();
 
-        if(await localStorage.ContainKeyAsync(LocalStorageKeys.UserData))
-        {
-            var userData = await localStorage.GetItemAsync<User>(LocalStorageKeys.UserData);
+        User = await localStorage.GetItemAsync<User>(LocalStorageKeys.UserData);
 
-            userName = userData.Handle;
-        }
     }
 
     async Task Send()
     {
-        await hubConnection.SendAsync("SendMessage", userName, messageInput);
+        await hubConnection.SendAsync("SendMessage", User, messageInput);
         messageInput = string.Empty;
     }
 

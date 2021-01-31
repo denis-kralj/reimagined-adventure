@@ -13,11 +13,11 @@ namespace ReimaginedAdventure.Server.Hubs
         {
             _chatStore = chatStore;
         }
-        public async Task SendMessage(string user, string message)
+        public async Task SendMessage(User user, string message)
         {
             var newMessage = new ChatMessage
             {
-                User = new User { Handle = user },
+                User = user,
                 Message = message,
                 Posted = DateTimeOffset.Now
             };

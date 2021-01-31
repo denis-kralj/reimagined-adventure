@@ -4,7 +4,10 @@
 <EditForm Model="@User" OnValidSubmit="@Submit">
 <FluentValidationValidator />
 <p>
-    You Handle: <InputText @bind-Value="@User.Handle"/>
+    Your Color: <input @bind-value="@User.Color" type="color" />
+</p>
+<p>
+    Your Handle: <InputText @bind-Value="@User.Handle"/>
 </p>
 <button type="submit">Let's Chat!</button>
 <ValidationSummary />
@@ -20,7 +23,7 @@
         {
             var userData = await localStorage.GetItemAsync<User>(LocalStorageKeys.UserData);
 
-            User.Handle = userData.Handle;
+            User = userData;
         }
     }
 

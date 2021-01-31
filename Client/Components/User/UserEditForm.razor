@@ -28,6 +28,6 @@
     {
         await localStorage.SetItemAsync<User>(LocalStorageKeys.UserData, User);
 
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo(PageLinks.Root);
     }
 }

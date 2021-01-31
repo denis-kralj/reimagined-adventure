@@ -1,0 +1,33 @@
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject NavigationManager NavigationManager
+
+<EditForm Model="@User" OnValidSubmit="@Submit">
+<FluentValidationValidator />
+<p>
+    You Handle: <InputText @bind-Value="@User.Handle"/>
+</p>
+<button type="submit">Let's Chat!</button>
+<ValidationSummary />
+</EditForm>
+
+
+@code {
+    User User { get; set; } = new User();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if(await localStorage.ContainKeyAsync(LocalStorageKeys.UserData))
+        {
+            var userData = await localStorage.GetItemAsync<User>(LocalStorageKeys.UserData);
+
+            User.Handle = userData.Handle;
+        }
+    }
+
+    public async Task Submit()
+    {
+        await localStorage.SetItemAsync<User>(LocalStorageKeys.UserData, User);
+
+        NavigationManager.NavigateTo(PageLinks.Root);
+    }
+}

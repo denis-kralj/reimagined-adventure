@@ -10,7 +10,7 @@
     </label>
 </div>
 <p><button @onclick="Send" disabled="@(!CanSend)">Send</button> as @userName (<a
-        @onclick="EditUserHandle">Adjust</a>)</p>
+        href="@(PageLinks.EditUserData)">Adjust</a>)</p>
 
 @code {
     private HubConnection hubConnection;
@@ -33,7 +33,6 @@
         }
     }
 
-    void EditUserHandle() => NavigationManager.NavigateTo("/EditUserHandle");
     async Task Send()
     {
         await hubConnection.SendAsync("SendMessage", userName, messageInput);

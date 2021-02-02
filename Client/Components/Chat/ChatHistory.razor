@@ -1,12 +1,13 @@
 ﻿@inject NavigationManager NavigationManager
 @inject HttpClient httpClient
+
 @implements IAsyncDisposable
 
 <div class="message-list">
 <ul id="messagesList">
     @foreach (ChatMessage message in chatMessages)
     {
-        <li><strong style="color:@(message.User.Color)">@message.User.Handle</strong>:<span>@message.Message</span></li>
+        <ChatMessageElement Message="@message" />
     }
 </ul>
 </div>

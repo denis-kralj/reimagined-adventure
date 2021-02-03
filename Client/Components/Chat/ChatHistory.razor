@@ -1,15 +1,16 @@
 ﻿@inject NavigationManager NavigationManager
 @inject HttpClient httpClient
+@inject IJSRuntime jSRuntime
 
 @implements IAsyncDisposable
 
 <div class="message-list">
-<ul id="messagesList">
-    @foreach (ChatMessage message in chatMessages)
-    {
-        <ChatMessageElement Message="@message" />
-    }
-</ul>
+    <ul id="messagesList">
+        @foreach (ChatMessage message in chatMessages)
+        {
+            <ChatMessageElement Message="@message" />
+        }
+    </ul>
 </div>
 @code {
     private HubConnection hubConnection;
@@ -19,6 +20,17 @@
     {
         await InitializeSignalRHub();
         await PopulateExistingMessages();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        await ScrollToBottom();
+    }
+
+    private async Task ScrollToBottom()
+    {
+        await jSRuntime.InvokeVoidAsync("scrollMessages");
     }
 
     private async Task PopulateExistingMessages()
@@ -33,12 +45,15 @@
             .WithUrl(NavigationManager.ToAbsoluteUri(UriSegments.ChatHub))
             .Build();
 
-        hubConnection.On<ChatMessage>("MessagesUpdated", (message) => { 
-            chatMessages.Add(message);
-            StateHasChanged();
-            });
+        hubConnection.On<ChatMessage>("MessagesUpdated", HandleMessage);
 
         await hubConnection.StartAsync();
+    }
+
+    private void HandleMessage(ChatMessage message)
+    {
+        chatMessages.Add(message);
+        StateHasChanged();
     }
 
     public async ValueTask DisposeAsync()

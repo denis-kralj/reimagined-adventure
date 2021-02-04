@@ -1,13 +1,8 @@
-function scrollMessages() {
-    //TODO: make this less horrible
-    var allMessages = document.getElementsByClassName('own-message');
-    
-    if(allMessages.length == 0) {
-        return;
-    }
+function ScrollToViewByElementId(elementId) {
+    var lastchild = document
+        .getElementById(elementId)
 
-    var lastIndex = allMessages.length - 1;
-    var lastElement = allMessages.item(lastIndex);
-    lastElement.scrollIntoView();
-
+    if(lastchild !== null) {
+        lastchild.scrollIntoView();
+    };
 }

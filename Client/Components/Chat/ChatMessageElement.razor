@@ -1,9 +1,10 @@
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject IJSRuntime jSRuntime
 
-    <li class="@(IsCurrentUserOwner?"own-message":"")">
+<li class="@(IsCurrentUserOwner ? "own-message" : "")" id="@(IsLast ? ElementId : "")">
     <strong style="color:@(Message.User.Color)">
         @(Message.User.Handle)
-    </strong> : 
+    </strong> :
     <span>
         @(Message.Message)
     </span>
@@ -12,12 +13,33 @@
 @code {
     [Parameter]
     public ChatMessage Message { get; set; }
+
+    [Parameter]
+    public bool IsLast { get; set; }
+
     private User currentUser = null;
+    private string ElementId => $"{this.GetHashCode()}";
+    private bool IsCurrentUserOwner => currentUser?.Handle == Message.User.Handle;
+
+    private string Fiz => currentUser?.Handle + Message.User.Handle;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (IsLast && firstRender)
+        {
+            await ScrollToBottom();
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
 
     protected override async Task OnInitializedAsync()
     {
         currentUser = await localStorage.GetItemAsync<User>(LocalStorageKeys.UserData);
     }
-    private bool IsCurrentUserOwner => currentUser?.Handle == Message.User.Handle;
 
+    private async Task ScrollToBottom()
+    {
+        await jSRuntime.InvokeVoidAsync("ScrollToViewByElementId", ElementId).ConfigureAwait(false);
+    }
 }

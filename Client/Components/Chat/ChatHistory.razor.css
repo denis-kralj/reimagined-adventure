@@ -9,4 +9,5 @@
     position: absolute;
     max-height: 90vh;
     width: 100%;
+    scroll-behavior: smooth;
 }

@@ -1,5 +1,6 @@
 .chat-component-block {
-    height: 100vh;
+    height: 100%;
+    direction: ltr;
 }
 
 .input {

@@ -3,7 +3,12 @@
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject NavigationManager NavigationManager
 
-<ChatComponent></ChatComponent>
+<div class="grid-container">
+    <div class="grid-element"></div>
+    <div class="grid-element sidebar"><ChatComponent /></div>
+</div>
+
+@* <ChatComponent /> *@
 
 @code {
     protected override async Task OnInitializedAsync()

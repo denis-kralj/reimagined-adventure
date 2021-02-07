@@ -6,7 +6,7 @@
 <div class="form-group">
     <label>
         Message:
-        <input @bind="messageInput" @onkeyup="MessageInputHandler" size="50" />
+        <input @bind="messageInput" @onkeyup="MessageInputHandler" size="45" />
     </label>
 </div>
 <p><button @onclick="Send" disabled="@(!CanSend)">Send</button> as @User.Handle (<a

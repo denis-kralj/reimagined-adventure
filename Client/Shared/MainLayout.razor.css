@@ -1,9 +1,4 @@
 .main {
     height: 100vh;
-    flex: 1;
-}
-.page {
-    position: relative;
-    display: flex;
-    flex-direction: row;
+    width: 100%;
 }

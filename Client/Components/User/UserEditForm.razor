@@ -1,16 +1,15 @@
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject NavigationManager NavigationManager
 
-<EditForm Model="@User" OnValidSubmit="@Submit">
-<FluentValidationValidator />
-<p>
-    Your Color: <input @bind-value="@User.Color" type="color" />
-</p>
-<p>
-    Your Handle: <InputText @bind-Value="@User.Handle"/>
-</p>
-<button type="submit">Let's Chat!</button>
-<ValidationSummary />
+<EditForm Model="@User" Context="CurrentEditContext" OnValidSubmit="@Submit">
+    <FluentValidationValidator />
+
+    <UserColorInput Label="Your Color" UserModel="@User"/>
+    <UserHandleInput Label="Your Handle" UserModel="@User" />
+
+    <button type="submit">Let's Chat!</button>
+
+    <ValidationSummary />
 </EditForm>
 
 

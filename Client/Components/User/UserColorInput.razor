@@ -1,0 +1,11 @@
+<p>
+    @Label: <input @bind-value="@(UserModel.Color)" type="color" />
+</p>
+
+@code {
+    [Parameter]
+    public User UserModel { get; set; }
+
+    [Parameter]
+    public string Label { get; set; }
+}

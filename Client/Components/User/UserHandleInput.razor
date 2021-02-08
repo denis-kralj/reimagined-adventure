@@ -1,0 +1,11 @@
+<p>
+    @Label: <InputText @bind-Value="@UserModel.Handle"/>
+</p>
+
+@code {
+    [Parameter]
+    public User UserModel { get; set; }
+
+    [Parameter]
+    public string Label { get; set; }
+}

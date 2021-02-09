@@ -1,0 +1,9 @@
+<span title="@ToolTip">@MainDisplay</span>
+
+@code {
+    [Parameter]
+    public DateTimeOffset Data { get; set; }
+
+    private string MainDisplay => Data.ToLocalTime().DateTime.ToString("HH:mm");
+    private string ToolTip => Data.ToLocalTime().DateTime.ToString("yyyy-MM-dd");
+}

@@ -2,6 +2,7 @@
 @inject IJSRuntime jSRuntime
 
 <li class="@(IsCurrentUserOwner ? "own-message" : "")" id="@(IsLast ? ElementId : "")">
+    [<TimestampComponent Data="@(Message.Posted)" />]
     <strong style="color:@(Message.User.Color)">
         @(Message.User.Handle)
     </strong> :

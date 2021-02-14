@@ -9,12 +9,12 @@
         <input @bind="messageInput" @onkeyup="MessageInputHandler" size="45" />
     </label>
 </div>
-<p><button @onclick="Send" disabled="@(!CanSend)">Send</button> as @User.Handle (<a
+<p><button @onclick="Send" disabled="@(!CanSend)">Send</button> as @User?.Handle (<a
         href="@(PageLinks.EditUserData)">Adjust</a>)</p>
 
 @code {
     private HubConnection hubConnection;
-    private User User = new User();
+    private User User;
     private string messageInput;
 
     protected override async Task OnInitializedAsync()

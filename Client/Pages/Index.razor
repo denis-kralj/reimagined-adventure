@@ -8,14 +8,20 @@
     <div class="grid-element sidebar"><ChatComponent /></div>
 </div>
 
-@* <ChatComponent /> *@
-
 @code {
     protected override async Task OnInitializedAsync()
     {
         var userDataExists = await localStorage.ContainKeyAsync(LocalStorageKeys.UserData);
+        var userDataIsReadable = false;
 
-        if(!userDataExists)
+        try
+        {
+            await localStorage.GetItemAsync<User>(LocalStorageKeys.UserData);
+            userDataIsReadable = true;
+        }
+        catch { }
+
+        if(!(userDataExists && userDataIsReadable))
         {
             NavigationManager.NavigateTo(PageLinks.EditUserData);
         }

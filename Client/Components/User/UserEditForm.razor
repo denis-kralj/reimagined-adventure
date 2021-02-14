@@ -20,9 +20,13 @@
     {
         if(await localStorage.ContainKeyAsync(LocalStorageKeys.UserData))
         {
-            var userData = await localStorage.GetItemAsync<User>(LocalStorageKeys.UserData);
+            try
+            {
+                var userData = await localStorage.GetItemAsync<User>(LocalStorageKeys.UserData);
 
-            User = userData;
+                User = userData;
+            }
+            catch { }
         }
     }
 

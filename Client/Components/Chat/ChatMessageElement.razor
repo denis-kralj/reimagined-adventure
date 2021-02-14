@@ -18,11 +18,9 @@
     [Parameter]
     public bool IsLast { get; set; }
 
-    private User currentUser = null;
+    private User currentUser;
     private string ElementId => $"{this.GetHashCode()}";
-    private bool IsCurrentUserOwner => currentUser?.Handle == Message.User.Handle;
-
-    private string Fiz => currentUser?.Handle + Message.User.Handle;
+    private bool IsCurrentUserOwner => currentUser?.Id == Message.User.Id;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

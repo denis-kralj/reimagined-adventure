@@ -1,15 +1,21 @@
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject IJSRuntime jSRuntime
 
-<li class="@(IsCurrentUserOwner ? "own-message" : "")" id="@(IsLast ? ElementId : "")">
-    [<TimestampComponent Data="@(Message.Posted)" />]
-    <strong style="color:@(Message.User.Color)">
-        @(Message.User.Handle)
-    </strong> :
-    <span>
-        @(Message.Message)
-    </span>
-</li>
+<div class="message @(IsCurrentUserOwner ? "mine" : "theirs")" id="@(IsLast ? ElementId : "")">
+    <div class="message-metadata">
+        <span class="message-metadata-handle">
+            <strong style="color:@(Message.User.Color)">
+                @HandleContent
+            </strong>
+        </span>
+        <span class="message-metadata-timestamp">
+            <TimestampComponent Data="@(Message.Posted)" />
+        </span>
+    </div>
+    <div class="message-content">
+        <span>@(Message.Message)</span>
+    </div>
+</div>
 
 @code {
     [Parameter]
@@ -19,8 +25,12 @@
     public bool IsLast { get; set; }
 
     private User currentUser;
+
     private string ElementId => $"{this.GetHashCode()}";
+
     private bool IsCurrentUserOwner => currentUser?.Id == Message.User.Id;
+
+    private string HandleContent => IsCurrentUserOwner ? $"You ({Message.User.Handle})" : Message.User.Handle;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

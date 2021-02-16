@@ -1,9 +1,9 @@
 .message-list {
-    height: 90vh;
+    height: 100%;
     position: relative;
 }
 
-.message-list>ul {
+.message-container {
     overflow-y: auto;
     bottom: 0px;
     position: absolute;

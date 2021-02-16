@@ -1,3 +1,28 @@
-.own-message {
+.mine {
     background-color:aliceblue;
+}
+
+.theirs {
+    background-color: cornsilk;
+}
+
+.message {
+    margin: 4px;
+    border: 1px solid blue;
+    border-radius: 5px;
+}
+
+.message-metadata {
+    height: 20%;
+    border-bottom: 1px solid blue;
+    padding: 3px;
+}
+
+.message-content {
+    height: 80%;
+    padding: 3px;
+}
+
+.message-metadata-timestamp {
+    float: right;
 }

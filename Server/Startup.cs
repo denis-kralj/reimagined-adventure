@@ -7,6 +7,9 @@ using Microsoft.Extensions.Hosting;
 using System.Linq;
 using ReimaginedAdventure.Server.Hubs;
 using ReimaginedAdventure.Shared;
+using ReimaginedAdventure.Server.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace ReimaginedAdventure.Server
 {
@@ -23,6 +26,12 @@ namespace ReimaginedAdventure.Server
         {
             services.AddSignalR();
             services.AddControllers();
+            services.AddDbContext<UserAccountDbContext>(options =>
+                options.UseSqlite(
+                    Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<UserAccountDbContext>();
             services.AddRazorPages();
             services.AddResponseCompression(opts =>
             {
@@ -40,6 +49,7 @@ namespace ReimaginedAdventure.Server
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseMigrationsEndPoint();
                 app.UseWebAssemblyDebugging();
             }
             else
@@ -53,6 +63,9 @@ namespace ReimaginedAdventure.Server
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

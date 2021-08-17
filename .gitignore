@@ -395,3 +395,6 @@ dist
 !.vscode/settings.json
 !.vscode/extensions.json
 *.code-workspace
+
+### local SQLite database
+app.db

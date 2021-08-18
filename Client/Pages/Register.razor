@@ -1,0 +1,67 @@
+@page "/Register"
+@using ReimaginedAdventure.Shared.Models
+@using Microsoft.Extensions.Logging
+
+@inject HttpClient httpClient
+@inject NavigationManager NavigationManager
+@inject ILogger<Register> logger
+
+<div class="form">
+    <p>@errorText</p>
+<div class="form-group">
+    <label>
+        Email:
+        <input @bind="email" size="45" />
+    </label>
+</div>
+<div class="form-group">
+    <label>
+        Password:
+        <input @bind="password" size="45" />
+    </label>
+</div>
+<div class="form-group">
+    <label>
+        Confirm Password:
+        <input @bind="passwordConfirmation" size="45" />
+    </label>
+</div>
+<p><button @onclick="RegisterNewUser" disabled="@(!CanRegister)">Register</button></p>
+</div>
+
+@code {
+    private string errorText;
+    private string email;
+    private string password;
+    private string passwordConfirmation;
+
+    async Task RegisterNewUser()
+    {
+        // TODO: validation
+        var response = await httpClient.PostAsJsonAsync<AccountRegistrationModel>("AccountCreate", BuildModel());
+        var result = await System.Text.Json.JsonSerializer.DeserializeAsync<AccountRegistrationResult>(response.Content.ReadAsStream());
+        // TODO: here for some reason I don't get the correct value when the response is successful, I'm guessing that the result
+        // gets properly populated after this value gets read, and it is always defaulting false (bool default)
+        if(result.WasSuccessful)
+        {
+            // this never happens because of the above issue...
+            NavigationManager.NavigateTo(string.IsNullOrEmpty(result.ReturnUrl) ? PageLinks.Root : result.ReturnUrl, true);
+        }
+        else
+        {
+            errorText = "There were errors!";
+        }
+    }
+
+    AccountRegistrationModel BuildModel() // TODO: find a better way to bind the model
+    {
+        return new AccountRegistrationModel
+        {
+            Email = email,
+            Password = password,
+            PasswordConfirmation = passwordConfirmation
+        };
+    }
+
+    bool CanRegister => true; //TODO: based from validator result after inputs are there
+}

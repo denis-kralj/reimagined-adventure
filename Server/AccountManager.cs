@@ -31,17 +31,4 @@ namespace ReimaginedAdventure.Server
             };
         }
     }
-    // TODO: pull this to separate file
-    public class AccountCreationResult
-    {
-        public bool WasSuccessful { get; set; }
-        public string[] Errors { get; set; }
-    }
-
-    // TODO: pull this to separate file
-    public class RegistrationData
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
-    }
 }

@@ -1,67 +1,36 @@
 @page "/Register"
-@using ReimaginedAdventure.Shared.Models
-@using Microsoft.Extensions.Logging
 
-@inject HttpClient httpClient
-@inject NavigationManager NavigationManager
-@inject ILogger<Register> logger
+@inject HttpClient _httpClient
+@inject NavigationManager _navigationManager
+@inject ILogger<Register> _logger
 
-<div class="form">
-    <p>@errorText</p>
-<div class="form-group">
-    <label>
-        Email:
-        <input @bind="email" size="45" />
-    </label>
-</div>
-<div class="form-group">
-    <label>
-        Password:
-        <input @bind="password" size="45" />
-    </label>
-</div>
-<div class="form-group">
-    <label>
-        Confirm Password:
-        <input @bind="passwordConfirmation" size="45" />
-    </label>
-</div>
-<p><button @onclick="RegisterNewUser" disabled="@(!CanRegister)">Register</button></p>
-</div>
+<EditForm Model="_model" OnValidSubmit="@RegisterNewUser">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputText id="name" @bind-Value="_model.Email" />
+    <InputText type="password" id="password" @bind-Value="_model.Password" />
+    <InputText type="password" id="confirmPassword" @bind-Value="_model.PasswordConfirmation" />
+
+    <button type="submit">Submit</button>
+</EditForm>
 
 @code {
-    private string errorText;
-    private string email;
-    private string password;
-    private string passwordConfirmation;
+    public AccountRegistrationModel _model { get; set; } = new();
 
     async Task RegisterNewUser()
     {
-        // TODO: validation
-        var response = await httpClient.PostAsJsonAsync<AccountRegistrationModel>("AccountCreate", BuildModel());
-        var result = await System.Text.Json.JsonSerializer.DeserializeAsync<AccountRegistrationResult>(response.Content.ReadAsStream());
-        // TODO: here for some reason I don't get the correct value when the response is successful, I'm guessing that the result
-        // gets properly populated after this value gets read, and it is always defaulting false (bool default)
-        if(result.WasSuccessful)
+        using (var response = await _httpClient.PostAsJsonAsync<AccountRegistrationModel>("AccountCreate", _model))
         {
-            // this never happens because of the above issue...
-            NavigationManager.NavigateTo(string.IsNullOrEmpty(result.ReturnUrl) ? PageLinks.Root : result.ReturnUrl, true);
-        }
-        else
-        {
-            errorText = "There were errors!";
+            var result = await response.Content.ReadFromJsonAsync<AccountRegistrationResult>();
+            if (result.WasSuccessful)
+            {
+                _navigationManager.NavigateTo(string.IsNullOrEmpty(result.ReturnUrl) ? PageLinks.Root : result.ReturnUrl, true);
+            }
+            else
+            {
+                _logger.LogWarning($"Result wasn't successful, error messages are [${string.Join(',',result.Errors)}]");
+            }
         }
     }
-
-    AccountRegistrationModel BuildModel() // TODO: find a better way to bind the model
-    {
-        return new AccountRegistrationModel
-        {
-            Email = email,
-            Password = password,
-            PasswordConfirmation = passwordConfirmation
-        };
-    }
-
-    bool CanRegister => true; //TODO: based from validator result after inputs are there
 }

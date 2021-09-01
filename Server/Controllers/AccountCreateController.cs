@@ -29,7 +29,6 @@ namespace ReimaginedAdventure.Server.Controllers
 
         private async Task<AccountCreationResult> ValidateAndRegister(AccountRegistrationModel accountRegistrationData)
         {
-            //TODO: validation
             return await _accountManager.RegisterNewUser(accountRegistrationData.ToRegistrationData());
         }
     }

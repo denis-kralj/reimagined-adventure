@@ -1,0 +1,36 @@
+@page "/Register"
+
+@inject HttpClient _httpClient
+@inject NavigationManager _navigationManager
+@inject ILogger<Register> _logger
+
+<EditForm Model="_model" OnValidSubmit="@RegisterNewUser">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputText id="name" @bind-Value="_model.Email" />
+    <InputText type="password" id="password" @bind-Value="_model.Password" />
+    <InputText type="password" id="confirmPassword" @bind-Value="_model.PasswordConfirmation" />
+
+    <button type="submit">Submit</button>
+</EditForm>
+
+@code {
+    public AccountRegistrationModel _model { get; set; } = new();
+
+    async Task RegisterNewUser()
+    {
+        using (var response = await _httpClient.PostAsJsonAsync<AccountRegistrationModel>("AccountCreate", _model))
+        {
+            var result = await response.Content.ReadFromJsonAsync<AccountRegistrationResult>();
+            if (result.WasSuccessful)
+            {
+                _navigationManager.NavigateTo(string.IsNullOrEmpty(result.ReturnUrl) ? PageLinks.Root : result.ReturnUrl, true);
+            }
+            else
+            {
+                _logger.LogWarning($"Result wasn't successful, error messages are [${string.Join(',',result.Errors)}]");
+            }
+        }
+    }
+}

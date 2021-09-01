@@ -40,6 +40,7 @@ namespace ReimaginedAdventure.Server
             });
 
             services.AddSingleton<IChatStore, MemoryChatStore>();
+            services.AddTransient<AccountManager>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -1,28 +1,28 @@
-@page "/Register"
+@page "/Login"
 
 @inject HttpClient _httpClient
 @inject NavigationManager _navigationManager
 @inject ILogger<Register> _logger
 
-<EditForm Model="_model" OnValidSubmit="@RegisterNewUser">
+<EditForm Model="_model" OnValidSubmit="@LoginUser">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
     <InputText id="name" @bind-Value="_model.Email" />
     <InputText type="password" id="password" @bind-Value="_model.Password" />
-    <InputText type="password" id="confirmPassword" @bind-Value="_model.PasswordConfirmation" />
+    <InputCheckbox id="rememberMe" @bind-Value="_model.RememberMe" />
 
     <button type="submit">Submit</button>
 </EditForm>
 
 @code {
-    public AccountRegistrationModel _model { get; set; } = new();
+    public AccountLoginModel _model { get; set; } = new();
 
-    async Task RegisterNewUser()
+    async Task LoginUser()
     {
-        using (var response = await _httpClient.PostAsJsonAsync<AccountRegistrationModel>("AccountCreate", _model))
+        using (var response = await _httpClient.PostAsJsonAsync<AccountLoginModel>("AccountLogin", _model))
         {
-            var result = await response.Content.ReadFromJsonAsync<AccountRegistrationResultModel>();
+            var result = await response.Content.ReadFromJsonAsync<AccountLoginResultModel>();
             if (result.WasSuccessful)
             {
                 _navigationManager.NavigateTo(string.IsNullOrEmpty(result.ReturnUrl) ? PageLinks.Root : result.ReturnUrl, true);

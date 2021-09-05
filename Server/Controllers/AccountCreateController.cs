@@ -16,10 +16,10 @@ namespace ReimaginedAdventure.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<AccountRegistrationResult> Post([FromBody]AccountRegistrationModel accountRegistrationModel, string returnUrl = "")
+        public async Task<AccountRegistrationResultModel> Post([FromBody]AccountRegistrationModel accountRegistrationModel, string returnUrl = "")
         {
             var result = await ValidateAndRegister(accountRegistrationModel);
-            return new AccountRegistrationResult
+            return new AccountRegistrationResultModel
             {
                 ReturnUrl = string.IsNullOrEmpty(returnUrl) ? returnUrl : Url.Content("~/"),
                 WasSuccessful = result.WasSuccessful,

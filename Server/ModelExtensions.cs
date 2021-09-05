@@ -12,5 +12,15 @@ namespace ReimaginedAdventure.Server
                 Password = model.Password
             };
         }
+
+        public static LoginData ToLoginData(this AccountLoginModel model)
+        {
+            return new LoginData
+            {
+                Email = model.Email,
+                Password = model.Password,
+                RememberMe = model.RememberMe
+            };
+        }
     }
 }

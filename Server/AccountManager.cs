@@ -15,6 +15,12 @@ namespace ReimaginedAdventure.Server
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<AccountManager> _logger;
 
+        public async Task LogoutUserAsync()
+        {
+            _logger.LogInformation($"Signing out user.");
+            await _signInManager.SignOutAsync();
+        }
+
         public AccountManager(IUserStore<IdentityUser> userStore, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ILogger<AccountManager> logger)
         {
             _userStore = userStore;

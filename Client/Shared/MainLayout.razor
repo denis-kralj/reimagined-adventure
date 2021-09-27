@@ -1,5 +1,18 @@
+@using ReimaginedAdventure.Client.Components.Shared
 @inherits LayoutComponentBase
 
-<div class="main">
-    @Body
+<div class="main-grid-layout">
+    <header class="header">
+        <ElementWrapper ElementBackgroundText="Header">
+            <UserBar />
+        </ElementWrapper>
+    </header>
+    <div class="body">
+        <ElementWrapper ElementBackgroundText="Body">
+            @Body
+        </ElementWrapper>
+    </div>
+    <footer class="footer">
+        <ElementWrapper ElementBackgroundText="Footer"></ElementWrapper>
+    </footer>
 </div>

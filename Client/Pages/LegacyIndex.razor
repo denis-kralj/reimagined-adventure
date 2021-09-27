@@ -1,0 +1,28 @@
+﻿@* Old index page, will be used for a specific game session when implemented *@
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject NavigationManager NavigationManager
+
+<div class="grid-container">
+    <div class="grid-element">content</div>
+    <div class="grid-element sidebar">chat @*<ChatComponent />*@</div>
+</div>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        var userDataExists = await localStorage.ContainKeyAsync(LocalStorageKeys.UserData);
+        var userDataIsReadable = false;
+
+        try
+        {
+            await localStorage.GetItemAsync<User>(LocalStorageKeys.UserData);
+            userDataIsReadable = true;
+        }
+        catch { }
+
+        if(!(userDataExists && userDataIsReadable))
+        {
+            NavigationManager.NavigateTo(PageLinks.EditUserData);
+        }
+    }
+}

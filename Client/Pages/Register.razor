@@ -7,10 +7,15 @@
 <EditForm Model="_model" OnValidSubmit="@RegisterNewUser">
     <DataAnnotationsValidator />
     <ValidationSummary />
-
-    <InputText id="name" @bind-Value="_model.Email" />
-    <InputText type="password" id="password" @bind-Value="_model.Password" />
-    <InputText type="password" id="confirmPassword" @bind-Value="_model.PasswordConfirmation" />
+    <div>
+    Email: <InputText id="name" @bind-Value="_model.Email" />
+    </div>
+    <div>
+    Password: <InputText type="password" id="password" @bind-Value="_model.Password" />
+    </div>
+    <div>
+    Confirm password: <InputText type="password" id="confirmPassword" @bind-Value="_model.PasswordConfirmation" />
+    </div>
 
     <button type="submit">Submit</button>
 </EditForm>
@@ -23,6 +28,9 @@
         using (var response = await _httpClient.PostAsJsonAsync<AccountRegistrationModel>("AccountCreate", _model))
         {
             var result = await response.Content.ReadFromJsonAsync<AccountRegistrationResultModel>();
+
+            if(result == null) return;
+
             if (result.WasSuccessful)
             {
                 _navigationManager.NavigateTo(string.IsNullOrEmpty(result.ReturnUrl) ? PageLinks.Root : result.ReturnUrl, true);

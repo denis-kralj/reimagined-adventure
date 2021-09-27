@@ -4,8 +4,8 @@
 
 @code {
     [Parameter]
-    public User UserModel { get; set; }
+    public User UserModel { get; set; } = new User();
 
     [Parameter]
-    public string Label { get; set; }
+    public string Label { get; set; } = string.Empty;
 }

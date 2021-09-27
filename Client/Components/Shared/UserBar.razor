@@ -1,0 +1,45 @@
+@inject HttpClient httpClient
+
+<div class="user-bar">
+    @if(_isLoading)
+    {
+        <span>Loading....</span>
+    }
+    else
+    {
+    <ElementWrapper ElementBackgroundText="User Bar">
+            <NavLink href="" Match="NavLinkMatch.All">
+                Home
+            </NavLink>
+        @if (IsAuthenticated)
+        {
+            <p>@AuthenticatedBanner</p>
+            <NavLink href="AccountLogout" Match="NavLinkMatch.All" >
+                Logout
+            </NavLink>
+        }
+        else
+        {
+            <NavLink href="Register" Match="NavLinkMatch.All">
+                Register
+            </NavLink>
+            <NavLink href="Login" Match="NavLinkMatch.All">
+                Login
+            </NavLink>
+        }
+    </ElementWrapper>
+    }
+</div>
+
+@code {
+    private bool _isLoading = true;
+    private string AuthenticatedBanner => IsAuthenticated ? $"You are logged in as {DisplayHandle}" : string.Empty;
+    private string DisplayHandle => _accountDataModel.Email;
+    private bool IsAuthenticated => _accountDataModel.IsAuthenticated;
+    private AccountDataModel _accountDataModel = new AccountDataModel();
+    protected override async Task OnInitializedAsync()
+    {
+        _accountDataModel = await httpClient.GetFromJsonAsync<AccountDataModel>("AccountData");
+        _isLoading = false;
+    }
+}

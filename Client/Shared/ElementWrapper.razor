@@ -1,0 +1,59 @@
+<div style=@StyleContent class="design-placeholder">
+    @BackgroundTextUsed
+    @ChildContent
+</div>
+
+@code {
+    @* This flag when set to true colors all divs, adds borders and 
+    adds text to display within it *@
+    private bool UseForDevelopment = false;
+
+    private string BackgroundTextUsed => UseForDevelopment ? ElementBackgroundText : string.Empty;
+
+    [Parameter]
+    public string ElementBackgroundText { get; set; } = string.Empty;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private string RandomColor => _colors[new Random().Next(0, _colors.Length)];
+    
+    private readonly string[] _colors =
+        new[]
+        {
+            "AliceBlue","AntiqueWhite","Aqua","Aquamarine","Azure","Beige",
+            "Bisque","Black","BlanchedAlmond","Blue","BlueViolet","Brown",
+            "BurlyWood","CadetBlue","Chartreuse","Chocolate","Coral",
+            "CornflowerBlue","Cornsilk","Crimson","Cyan","DarkBlue","DarkCyan",
+            "DarkGoldenrod","DarkGray","DarkGreen","DarkGrey","DarkKhaki",
+            "DarkMagenta","DarkOliveGreen","DarkOrange","DarkOrchid","DarkRed",
+            "DarkSalmon","DarkSeaGreen","DarkSlateBlue","DarkSlateGray",
+            "DarkSlateGrey","DarkTurquoise","DarkViolet","DeepPink",
+            "DeepSkyBlue","DimGray","DodgerBlue","FireBrick","FloralWhite",
+            "ForestGreen","Fuchsia","Gainsboro","GhostWhite","Gold","Goldenrod",
+            "Gray","Green","GreenYellow","Grey","Honeydew","HotPink",
+            "IndianRed","Indigo","Ivory","Khaki","Lavender","LavenderBlush",
+            "LawnGreen","LemonChiffon","LightBlue","LightCoral","LightCyan",
+            "LightGoldenrodYellow","LightGray","LightGreen","LightGrey",
+            "LightPink","LightSalmon","LightSeaGreen","LightSkyBlue",
+            "LightSlateGray","LightSlateGrey","LightSteelBlue","LightYellow",
+            "Lime","LimeGreen","Linen","Magenta","Maroon","MediumAquamarine",
+            "MediumBlue","MediumOrchid","MediumPurple","MediumSeaGreen",
+            "MediumSlateBlue","MediumSpringGreen","MediumTurquoise",
+            "MediumVioletRed","MidnightBlue","MintCream","MistyRose","Moccasin",
+            "NavajoWhite","Navy","OldLace","Olive","OliveDrab","Orange",
+            "OrangeRed","Orchid","PaleGoldenrod","PaleGreen","PaleTurquoise",
+            "PaleVioletRed","PapayaWhip","PeachPuff","Peru","Pink","Plum",
+            "PowderBlue","Purple","Rebeccapurple","Red","RosyBrown","RoyalBlue",
+            "SaddleBrown","Salmon","SandyBrown","SeaGreen","Seashell","Sienna",
+            "Silver","SkyBlue","SlateBlue","SlateGray","SlateGrey","Snow",
+            "SpringGreen","SteelBlue","Tan","Teal","Thistle","Tomato",
+            "Turquoise","Violet","Wheat","White","WhiteSmoke","Yellow",
+            "YellowGreen"
+        };
+
+    private string StyleContent => UseForDevelopment ? 
+        $"color:{RandomColor};background-color:{RandomColor};border: solid {RandomColor} 4px;height:100%;width:100%;box-sizing: border-box;position:relative;"
+        :
+        string.Empty;
+}

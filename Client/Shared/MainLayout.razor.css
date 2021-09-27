@@ -1,4 +1,7 @@
-.main {
-    height: 100vh;
+.main-grid-layout {
+    height: 100%;
     width: 100%;
+    display: grid;
+    grid-template-rows: 5rem auto 5rem;
+    grid-template-columns: auto;
 }

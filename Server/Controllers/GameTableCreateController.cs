@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReimaginedAdventure.Server.Data;
 using ReimaginedAdventure.Shared.Models;
@@ -8,6 +9,7 @@ using ReimaginedAdventure.Shared.Models;
 namespace ReimaginedAdventure.Server.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("[controller]")]
     public class GameTableCreateController : ControllerBase
     {

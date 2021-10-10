@@ -1,5 +1,38 @@
 @page "/"
+@inject HttpClient httpClient
 
-<div>
-    <h1>Welcome to Reimagined Adventure!</h1>
+<div class="dashboard">
+    @if(_isLoading)
+    {
+        <span>Loading....</span>
+    }
+    else
+    {
+    <ElementWrapper ElementBackgroundText="Dashboard">
+        @if (IsAuthenticated)
+        {
+            <GameTableListComponent />
+        }
+        else
+        {
+            <div>
+                <h1>Welcome to Reimagined Adventure!</h1>
+                <p>Use the navigation above to login or register</p>
+            </div>
+        }
+    </ElementWrapper>
+    }
 </div>
+
+@code {
+    private bool _isLoading = true;
+    private string AuthenticatedBanner => IsAuthenticated ? $"You are logged in as {DisplayHandle}" : string.Empty;
+    private string DisplayHandle => _accountDataModel.Email;
+    private bool IsAuthenticated => _accountDataModel.IsAuthenticated;
+    private AccountDataModel _accountDataModel = new AccountDataModel();
+    protected override async Task OnInitializedAsync()
+    {
+        _accountDataModel = await httpClient.GetFromJsonAsync<AccountDataModel>("AccountData");
+        _isLoading = false;
+    }
+}

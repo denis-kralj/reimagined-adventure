@@ -1,0 +1,41 @@
+@page "/NewGameTable"
+
+@inject HttpClient _httpClient
+@inject NavigationManager _navigationManager
+@inject ILogger<Register> _logger
+
+<h2>Create new game table</h2>
+<EditForm Model="_model" OnValidSubmit="@CreateNewGameTable">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+    Table name: <InputText id="name" @bind-Value="_model.Name" />
+    </div>
+    <div>
+    Table description: <InputText id="description" @bind-Value="_model.Description" />
+    </div>
+    <button type="submit">Create new game table</button>
+</EditForm>
+
+@code {
+    public CreateGameTableModel _model { get; set; } = new();
+
+    async Task CreateNewGameTable()
+    {
+        using (var response = await _httpClient.PostAsJsonAsync<CreateGameTableModel>("GameTableCreate", _model))
+        {
+            var result = await response.Content.ReadFromJsonAsync<CreateGameTableResultModel>();
+
+            if(result == null) return;
+
+            if (result.WasSuccessful)
+            {
+                _navigationManager.NavigateTo(string.IsNullOrEmpty(result.ReturnUrl) ? PageLinks.Root : result.ReturnUrl, true);
+            }
+            else
+            {
+                _logger.LogWarning($"Result wasn't successful, error messages are [${string.Join(',',result.Errors)}]");
+            }
+        }
+    }
+}

@@ -1,0 +1,32 @@
+@inject NavigationManager _navigationManager
+
+<div>
+    @if(_isLoading) {
+        <span>Loading....</span>
+    } else {
+    <div>
+        Your game tables:
+        <ul>
+            <li>Game 1</li>
+            <li>Game 2</li>
+            <li>Game 3</li>
+        </ul>
+
+        <button @onclick=CreateNewGameTableButtonClick>Create new game</button>
+    </div>
+    }
+</div>
+
+@code {
+    private bool _isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _isLoading = false;
+    }
+
+    private async Task CreateNewGameTableButtonClick()
+    {
+        _navigationManager.NavigateTo("NewGameTable");
+    }
+}

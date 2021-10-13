@@ -9,5 +9,7 @@ namespace ReimaginedAdventure.Server.Data
             : base(options)
         {
         }
+
+        public virtual DbSet<GameTable> GameTables { get; set; }
     }
 }

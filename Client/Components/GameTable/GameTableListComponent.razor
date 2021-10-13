@@ -1,0 +1,36 @@
+@inject NavigationManager _navigationManager
+@inject HttpClient _httpClient
+
+<div>
+    @if(_isLoading) {
+        <span>Loading....</span>
+    } else {
+    <div>
+        Your game tables:
+        <ul>
+            @foreach (var gameTable in Games)
+            {
+                <li>@gameTable.Name</li>
+            }
+        </ul>
+
+        <button @onclick=CreateNewGameTableButtonClick>Create new game</button>
+    </div>
+    }
+</div>
+
+@code {
+    private bool _isLoading = true;
+    private IEnumerable<GameTableListElementModel> Games = new List<GameTableListElementModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Games = await _httpClient.GetFromJsonAsync<IEnumerable<GameTableListElementModel>>("UserGameTables");
+        _isLoading = false;
+    }
+
+    private async Task CreateNewGameTableButtonClick()
+    {
+        _navigationManager.NavigateTo("NewGameTable");
+    }
+}

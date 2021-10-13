@@ -31,17 +31,16 @@ namespace ReimaginedAdventure.Server.Controllers
             };
         }
 
-        private async Task<AccountCreationResult> ValidateAndCreate(CreateGameTableModel accountRegistrationData)
+        private async Task<AccountCreationResult> ValidateAndCreate(CreateGameTableModel createGameData)
         {
             var result = new AccountCreationResult();
             try
             {
-                //TODO: validation serverside
                 var userData = _databaseContext.Users.Single(u => u.Email == this.User.Identity.Name);
                 var newGameTable = Activator.CreateInstance<GameTable>();
 
-                newGameTable.Name = accountRegistrationData.Name;
-                newGameTable.Description = accountRegistrationData.Description ?? string.Empty;
+                newGameTable.Name = createGameData.Name;
+                newGameTable.Description = createGameData.Description ?? string.Empty;
                 newGameTable.Owner = userData;
 
                 await _databaseContext.AddAsync(newGameTable);

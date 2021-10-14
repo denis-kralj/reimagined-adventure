@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ReimaginedAdventure.Server.Data
 {
-    public class UserAccountDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
-        public UserAccountDbContext(DbContextOptions<UserAccountDbContext> options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }

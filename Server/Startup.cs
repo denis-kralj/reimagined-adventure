@@ -10,6 +10,7 @@ using ReimaginedAdventure.Shared;
 using ReimaginedAdventure.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using ReimaginedAdventure.Server.Options;
 
 namespace ReimaginedAdventure.Server
 {
@@ -26,12 +27,12 @@ namespace ReimaginedAdventure.Server
         {
             services.AddSignalR();
             services.AddControllers();
-            services.AddDbContext<UserAccountDbContext>(options =>
+            services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<UserAccountDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRazorPages();
             services.AddResponseCompression(opts =>
             {
@@ -41,6 +42,14 @@ namespace ReimaginedAdventure.Server
 
             services.AddSingleton<IChatStore, MemoryChatStore>();
             services.AddTransient<AccountManager>();
+
+            InjectOptionsFromAppSettings(services);
+        }
+
+        private void InjectOptionsFromAppSettings(IServiceCollection services)
+        {
+            services
+                .Configure<Authentication>(Configuration.GetSection(nameof(Authentication)));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

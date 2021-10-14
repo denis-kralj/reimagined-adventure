@@ -1,6 +1,6 @@
 namespace ReimaginedAdventure.Shared.Models
 {
-    public class AccountRegistrationResultModel
+    public class BaseResponseModel
     {
         public bool WasSuccessful { get; set; }
         public string ReturnUrl { get; set; }

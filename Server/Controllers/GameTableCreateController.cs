@@ -13,8 +13,8 @@ namespace ReimaginedAdventure.Server.Controllers
     [Route("[controller]")]
     public class GameTableCreateController : ControllerBase
     {
-        private readonly UserAccountDbContext _databaseContext;
-        public GameTableCreateController(UserAccountDbContext databaseContext)
+        private readonly ApplicationDbContext _databaseContext;
+        public GameTableCreateController(ApplicationDbContext databaseContext)
         {
             _databaseContext = databaseContext;
         }

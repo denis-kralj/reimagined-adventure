@@ -7,7 +7,7 @@ using ReimaginedAdventure.Server.Data;
 
 namespace ReimaginedAdventure.Server.Migrations
 {
-    [DbContext(typeof(UserAccountDbContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     partial class UserAccountDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

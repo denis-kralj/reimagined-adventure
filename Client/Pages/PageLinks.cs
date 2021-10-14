@@ -4,5 +4,6 @@ namespace ReimaginedAdventure.Client
     {
         public const string Root = "/";
         public const string EditUserData = "/EditUserData";
+        public const string NewGameTable = "/NewGameTable";
     }
 }

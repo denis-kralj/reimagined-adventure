@@ -57,7 +57,7 @@ namespace ReimaginedAdventure.Server
 
             if (signInResult == SignInResult.Success)
             {
-                _logger.LogInformation($"User [{data.Email}] logged in.");
+                _logger.LogDebug($"User [{data.Email}] logged in.");
                 return new AccountLoginResult { WasSuccessful = true };
             }
             else

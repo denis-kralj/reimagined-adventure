@@ -1,4 +1,4 @@
-namespace ReimaginedAdventure.Shared
+namespace ReimaginedAdventure.Client
 {
     public static class LocalStorageKeys
     {

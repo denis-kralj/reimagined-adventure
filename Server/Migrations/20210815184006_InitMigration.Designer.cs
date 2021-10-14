@@ -7,7 +7,7 @@ using ReimaginedAdventure.Server.Data;
 
 namespace ReimaginedAdventure.Server.Migrations
 {
-    [DbContext(typeof(UserAccountDbContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20210815184006_InitMigration")]
     partial class InitMigration
     {

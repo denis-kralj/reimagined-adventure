@@ -8,7 +8,7 @@ using ReimaginedAdventure.Server.Data;
 
 namespace ReimaginedAdventure.Server.Migrations
 {
-    [DbContext(typeof(UserAccountDbContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20211010122948_CreateGameTables")]
     partial class CreateGameTables
     {

@@ -27,12 +27,12 @@ namespace ReimaginedAdventure.Server
         {
             services.AddSignalR();
             services.AddControllers();
-            services.AddDbContext<UserAccountDbContext>(options =>
+            services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<UserAccountDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRazorPages();
             services.AddResponseCompression(opts =>
             {

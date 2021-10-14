@@ -10,6 +10,7 @@ using ReimaginedAdventure.Shared;
 using ReimaginedAdventure.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using ReimaginedAdventure.Server.Options;
 
 namespace ReimaginedAdventure.Server
 {
@@ -41,6 +42,14 @@ namespace ReimaginedAdventure.Server
 
             services.AddSingleton<IChatStore, MemoryChatStore>();
             services.AddTransient<AccountManager>();
+
+            InjectOptionsFromAppSettings(services);
+        }
+
+        private void InjectOptionsFromAppSettings(IServiceCollection services)
+        {
+            services
+                .Configure<Authentication>(Configuration.GetSection(nameof(Authentication)));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

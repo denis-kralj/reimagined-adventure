@@ -4,56 +4,95 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using ReimaginedAdventure.Server.Options;
 
 namespace ReimaginedAdventure.Server
 {
     public class AccountManager
     {
         private readonly IUserStore<IdentityUser> _userStore;
-        private readonly IUserEmailStore<IdentityUser> _userEmailStore;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<AccountManager> _logger;
+        private readonly Authentication _authenticationOptions;
+
+        private IUserEmailStore<IdentityUser> _userEmailStore => _userStore as IUserEmailStore<IdentityUser>;
+        private AccountLoginResult FailToLoginResult =>
+            new AccountLoginResult
+            {
+                WasSuccessful = false,
+                Errors = new[] { "Unable to log into account, contact support." }
+            };
 
         public async Task LogoutUserAsync()
         {
-            _logger.LogInformation($"Signing out user.");
+            _logger.LogDebug("Signing out user.");
             await _signInManager.SignOutAsync();
         }
 
-        public AccountManager(IUserStore<IdentityUser> userStore, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ILogger<AccountManager> logger)
+        public AccountManager(
+            ILogger<AccountManager> logger,
+            IUserStore<IdentityUser> userStore,
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager,
+            IOptions<Authentication> authenticationOptions
+        )
         {
             _userStore = userStore;
-            _userEmailStore = userStore as IUserEmailStore<IdentityUser>;
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _authenticationOptions = authenticationOptions.Value;
         }
 
         public async Task<AccountLoginResult> LoginUserAsync(LoginData data)
         {
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-            var signInResult = await _signInManager.PasswordSignInAsync(data.Email, data.Password, data.RememberMe, lockoutOnFailure: false);
+            var signInResult =  await _signInManager.PasswordSignInAsync(
+                    userName: data.Email,
+                    password: data.Password,
+                    isPersistent: data.RememberMe,
+                    lockoutOnFailure: _authenticationOptions.EnableLockoutOnFailure
+                );
 
-            if (signInResult.Succeeded)
+            if (signInResult == SignInResult.Success)
             {
                 _logger.LogInformation($"User [{data.Email}] logged in.");
                 return new AccountLoginResult { WasSuccessful = true };
             }
             else
             {
-                var message =
-                    signInResult.IsLockedOut ?
-                    $"User account [{data.Email}] locked out." :
-                    $"User [{data.Email}] could not be logged in.";
+                this.LogReasoning(signInResult, data);
+                return FailToLoginResult;
+            }
+        }
 
-                _logger.LogWarning(message);
-                return new AccountLoginResult
-                {
-                    WasSuccessful = false,
-                    Errors = new[] { message }
-                };
+        private void LogReasoning(SignInResult signInResult, LoginData data)
+        {
+            string message = GetMessage(signInResult, data);
+            _logger.LogDebug(message);
+        }
+
+        private string GetMessage(SignInResult signInResult, LoginData data)
+        {
+            if (signInResult == SignInResult.LockedOut)
+            {
+                return $"User account [{data.Email}] was locked out.";
+            }
+            else if (signInResult == SignInResult.NotAllowed)
+            {
+                return $"User account [{data.Email}] is not allowed.";
+            }
+            else if (signInResult == SignInResult.Failed)
+            {
+                return $"User account [{data.Email}] failed to log in without provided reason.";
+            }
+            else
+            {
+                // we are either requiring 2 factor auth (that isn't supported) or
+                // we have a sign in result that isn't accounted for, in both
+                // cases, we throw
+                throw new NotImplementedException("We don't want to end up here, wtf...");
             }
         }
 

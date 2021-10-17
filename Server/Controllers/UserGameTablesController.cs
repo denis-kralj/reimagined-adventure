@@ -10,11 +10,11 @@ namespace ReimaginedAdventure.Server.Controllers
     [ApiController]
     [Authorize]
     [Route("[controller]")]
-    public class UserGameTablesController : ControllerBase
+    public class UserGameTablesController : ApplicationController
     {
         private readonly ApplicationDbContext _databaseContext;
 
-        public UserGameTablesController(ApplicationDbContext databaseContext)
+        public UserGameTablesController(ApplicationDbContext databaseContext) : base(databaseContext)
         {
             _databaseContext = databaseContext;
         }
@@ -22,7 +22,7 @@ namespace ReimaginedAdventure.Server.Controllers
         [HttpGet]
         public IEnumerable<GameTableListElementModel> Get() =>
             _databaseContext.GameTables
-                .Where(t => t.Owner == _databaseContext.Users.Single(u => u.Email == User.Identity.Name))
-                .Select(t => new GameTableListElementModel { Name = t.Name, Id = t.Id });
+            .Where(t => t.Owner == CurrentUser)
+            .Select(t => new GameTableListElementModel(t.Name, t.Id));
     }
 }

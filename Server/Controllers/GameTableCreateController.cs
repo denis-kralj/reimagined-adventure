@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,16 +10,16 @@ namespace ReimaginedAdventure.Server.Controllers
     [ApiController]
     [Authorize]
     [Route("[controller]")]
-    public class GameTableCreateController : ControllerBase
+    public class GameTableCreateController : ApplicationController
     {
         private readonly ApplicationDbContext _databaseContext;
-        public GameTableCreateController(ApplicationDbContext databaseContext)
+        public GameTableCreateController(ApplicationDbContext databaseContext) : base(databaseContext)
         {
             _databaseContext = databaseContext;
         }
 
         [HttpPost]
-        public async Task<CreateGameTableResultModel> Post([FromBody]CreateGameTableModel gameTableCreateModel)
+        public async Task<CreateGameTableResultModel> Post([FromBody] CreateGameTableModel gameTableCreateModel)
         {
             var result = await ValidateAndCreate(gameTableCreateModel);
             return new CreateGameTableResultModel
@@ -36,12 +35,11 @@ namespace ReimaginedAdventure.Server.Controllers
             var result = new AccountCreationResult();
             try
             {
-                var userData = _databaseContext.Users.Single(u => u.Email == this.User.Identity.Name);
                 var newGameTable = Activator.CreateInstance<GameTable>();
 
                 newGameTable.Name = createGameData.Name;
                 newGameTable.Description = createGameData.Description ?? string.Empty;
-                newGameTable.Owner = userData;
+                newGameTable.Owner = CurrentUser;
 
                 await _databaseContext.AddAsync(newGameTable);
                 await _databaseContext.SaveChangesAsync();

@@ -5,7 +5,7 @@ namespace ReimaginedAdventure.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AccountLogoutController : ControllerBase
+    public class AccountLogoutController : ApplicationController
     {
         private AccountManager _accountManager;
 

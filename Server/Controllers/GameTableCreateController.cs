@@ -11,7 +11,7 @@ namespace ReimaginedAdventure.Server.Controllers
     [ApiController]
     [Authorize]
     [Route("[controller]")]
-    public class GameTableCreateController : ControllerBase
+    public class GameTableCreateController : ApplicationController
     {
         private readonly ApplicationDbContext _databaseContext;
         public GameTableCreateController(ApplicationDbContext databaseContext)

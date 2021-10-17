@@ -7,7 +7,7 @@ namespace ReimaginedAdventure.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MessageController : ControllerBase
+    public class MessageController : ApplicationController
     {
         private IChatStore _chatStore;
 

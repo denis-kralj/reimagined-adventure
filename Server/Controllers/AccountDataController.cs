@@ -6,7 +6,7 @@ namespace ReimaginedAdventure.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AccountDataController : ControllerBase
+    public class AccountDataController : ApplicationController
     {
         private AccountManager _accountManager;
 

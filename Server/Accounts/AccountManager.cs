@@ -17,7 +17,7 @@ namespace ReimaginedAdventure.Server
         private readonly ILogger<AccountManager> _logger;
         private readonly Authentication _authenticationOptions;
 
-        private IUserEmailStore<IdentityUser> _userEmailStore => _userStore as IUserEmailStore<IdentityUser>;
+        private IUserEmailStore<IdentityUser> _userEmailStore => _userStore as IUserEmailStore<IdentityUser> ?? throw new ArgumentNullException();
         private AccountLoginResult FailToLoginResult =>
             new AccountLoginResult
             {
@@ -105,7 +105,7 @@ namespace ReimaginedAdventure.Server
             return new AccountCreationResult
             {
                 WasSuccessful = result.Succeeded,
-                Errors = result.Errors?.Select(ie => ie.Description).ToArray()
+                Errors = result.Errors?.Select(ie => ie.Description).ToArray() ?? Array.Empty<string>()
             };
         }
     }

@@ -18,6 +18,6 @@ namespace ReimaginedAdventure.Server.Data
 
         [Required]
         [ForeignKey(nameof(IdentityUser))]
-        public IdentityUser Owner { get; set; }
+        public IdentityUser Owner { get; set; } = Activator.CreateInstance<IdentityUser>();
     }
 }

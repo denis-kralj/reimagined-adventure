@@ -19,27 +19,21 @@ namespace ReimaginedAdventure.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<CreateGameTableResultModel> Post([FromBody] CreateGameTableModel gameTableCreateModel)
+        public async Task<CreateGameTableResultModel> Post([FromBody] CreateGameTableModel createGameTableModel)
         {
-            var result = await ValidateAndCreate(gameTableCreateModel);
-            return new CreateGameTableResultModel
-            {
-                ReturnUrl = Url.Content("~/"),
-                WasSuccessful = result.WasSuccessful,
-                Errors = result.Errors
-            };
+            return await ValidateAndCreate(createGameTableModel);
         }
 
-        private async Task<AccountCreationResult> ValidateAndCreate(CreateGameTableModel createGameData)
+        private async Task<CreateGameTableResultModel> ValidateAndCreate(CreateGameTableModel createGameTableModel)
         {
-            var result = new AccountCreationResult();
+            var result = new CreateGameTableResultModel();
             try
             {
                 var newGameTable = Activator.CreateInstance<GameTable>();
 
-                newGameTable.Name = createGameData.Name;
-                newGameTable.Description = createGameData.Description ?? string.Empty;
-                newGameTable.Owner = CurrentUser;
+                newGameTable.Name = createGameTableModel.Name;
+                newGameTable.Description = createGameTableModel.Description ?? string.Empty;
+                newGameTable.Owner = CurrentUser ?? throw new Exception("This should not happen");
 
                 await _databaseContext.AddAsync(newGameTable);
                 await _databaseContext.SaveChangesAsync();

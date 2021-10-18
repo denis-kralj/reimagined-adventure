@@ -4,8 +4,8 @@ namespace ReimaginedAdventure.Shared
 {
     public record ChatMessage
     {
-        public User User { get; set; }
-        public DateTimeOffset Posted { get; set; }
-        public string Message { get; set; }
+        public User User { get; set; } = new();
+        public DateTimeOffset Posted { get; set; } = DateTimeOffset.MinValue;
+        public string Message { get; set; } = string.Empty;
     }
 }

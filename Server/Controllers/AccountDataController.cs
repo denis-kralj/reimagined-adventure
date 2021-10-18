@@ -23,8 +23,8 @@ namespace ReimaginedAdventure.Server.Controllers
         {
             return Task.FromResult(new AccountDataModel
             {
-                IsAuthenticated = User.Identity.IsAuthenticated,
-                Email = this.User.Identity.Name
+                IsAuthenticated = User?.Identity?.IsAuthenticated ?? false,
+                Email = User?.Identity?.Name ?? string.Empty
             });
         }
     }

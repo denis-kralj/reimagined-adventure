@@ -9,7 +9,7 @@ namespace ReimaginedAdventure.Server.Pages
     [IgnoreAntiforgeryToken]
     public class ErrorModel : PageModel
     {
-        public string RequestId { get; set; }
+        public string RequestId { get; set; } = string.Empty;
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 

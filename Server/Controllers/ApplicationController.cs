@@ -13,12 +13,13 @@ namespace ReimaginedAdventure.Server.Controllers
         {
             _databaseContext = databaseContext;
         }
+
         public IdentityUser CurrentUser =>
-            User.Identity.IsAuthenticated ?
+            User?.Identity?.IsAuthenticated ?? false ?
             _databaseContext.Users.Single(u => u.Email == User.Identity.Name) :
             null;
 
         public string GenerateReturnUrl(string returnUrl) =>
-            string.IsNullOrEmpty(returnUrl) ? returnUrl : Url.Content("~/");
+            string.IsNullOrEmpty(returnUrl) ? returnUrl : Url.Content("~/") ?? string.Empty;
     }
 }

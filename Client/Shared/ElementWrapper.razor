@@ -14,7 +14,7 @@
     public string ElementBackgroundText { get; set; } = string.Empty;
 
     [Parameter]
-    public RenderFragment? ChildContent { get; set; }
+    public RenderFragment ChildContent { get; set; }
 
     private string RandomColor => _colors[new Random().Next(0, _colors.Length)];
     
